@@ -18,6 +18,7 @@
 package com.kurento.kas.media.codecs;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 import com.kurento.kas.media.exception.CodecNotSupportedException;
 
@@ -34,15 +35,15 @@ public enum AudioCodecType {
 	private int codecID;
 	private int supportedSampleRate;
 	private int supportedBitRate;
-	private ArrayList<String> arrayCodecStrings;
+	private Collection<String> collectionCodecStrings;
 
 	private AudioCodecType(int codecID, int supportedSampleRate, int supportedBitRate, String[] codecStrings) {
 		this.codecID = codecID;
 		this.supportedSampleRate = supportedSampleRate;
 		this.supportedBitRate = supportedBitRate;
-		arrayCodecStrings = new ArrayList<String>();
+		collectionCodecStrings = new ArrayList<String>();
 		for (String s : codecStrings)
-			arrayCodecStrings.add(s);
+			collectionCodecStrings.add(s);
 	}
 
 	public int getCodecID() {
@@ -57,27 +58,27 @@ public enum AudioCodecType {
 		return supportedBitRate;
 	}
 
-	public ArrayList<String> getArrayCodecStrings() {
-		return arrayCodecStrings;
+	public Collection<String> getCollectionCodecStrings() {
+		return collectionCodecStrings;
 	}
 	
 	public static int getCodecIdFromName(String codecName) throws CodecNotSupportedException {
-		if (AMR.arrayCodecStrings.contains(codecName))
+		if (AMR.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AMR.codecID;
-		else if (MP2.arrayCodecStrings.contains(codecName))
+		else if (MP2.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return MP2.codecID;
-		else if (AAC.arrayCodecStrings.contains(codecName))
+		else if (AAC.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AAC.codecID;
 
 		throw new CodecNotSupportedException("Codec not supported");
 	}
 	
 	public static AudioCodecType getCodecTypeFromName(String codecName) throws CodecNotSupportedException {
-		if (AMR.arrayCodecStrings.contains(codecName))
+		if (AMR.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AMR;
-		else if (MP2.arrayCodecStrings.contains(codecName))
+		else if (MP2.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return MP2;
-		else if (AAC.arrayCodecStrings.contains(codecName))
+		else if (AAC.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AAC;
 
 		throw new CodecNotSupportedException("Codec not supported");
