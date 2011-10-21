@@ -177,7 +177,7 @@
 	<scm>
 		<connection>scm:http://kurento.googlecode.com</connection>
 		<developerConnection>scm:git:ssh://git@repository.kurento.com/kas/kas-media.git</developerConnection>
-                <url>https://repository.kurento.com/git/kurento-android-sdk/?p=kas-media.git</url>
+		<url>https://repository.kurento.com/git/kurento-android-sdk/?p=kas-media.git</url>
 	</scm>
 
 	<licenses>
