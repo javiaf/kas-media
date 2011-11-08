@@ -59,7 +59,7 @@
 		<dependency>
 			<groupId>com.kurento.kas</groupId>
 			<artifactId>kas-media-native</artifactId>
-			<version>1.1.0-RC-2</version>
+			<version>1.1.0-RC-3</version>
 			<type>so</type>
 			<classifier>armeabi</classifier>
 			<scope>runtime</scope>
