@@ -33,7 +33,7 @@ public class MediaTx {
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
-			int qmax, int codecId, int payload_type, String presetFile);
+			int qmax, int codecId, int payload_type);
 
 	public static int initVideo(VideoInfoTx videoInfoTx) {
 		int qmax = VideoCodecParams.getQMax(videoInfoTx);
@@ -44,7 +44,7 @@ public class MediaTx {
 						.getVideoProfile().getBitRate(), videoInfoTx
 						.getVideoProfile().getGopSize(), qmax, videoInfoTx
 						.getVideoProfile().getVideoCodecType().getCodecID(),
-				videoInfoTx.getPayloadType(), "");
+				videoInfoTx.getPayloadType());
 	}
 
 	public static native int putVideoFrame(byte[] frame, int width, int height);
