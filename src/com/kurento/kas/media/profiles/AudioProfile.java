@@ -23,7 +23,9 @@ public enum AudioProfile {
 	AMR(AudioCodecType.AMR, AudioCodecType.AMR.getSupportedBitRate(),
 			AudioCodecType.AMR.getSupportedSampleRate(), "amr bit_rate=12200"),
 	MP2(AudioCodecType.MP2, AudioCodecType.MP2.getSupportedBitRate(),
-			AudioCodecType.MP2.getSupportedSampleRate(), "mp2 bit_rate=64000");
+			AudioCodecType.MP2.getSupportedSampleRate(), "mp2 bit_rate=64000"),
+	AAC(AudioCodecType.AAC, AudioCodecType.AAC.getSupportedBitRate(),
+			AudioCodecType.AAC.getSupportedSampleRate(), "aac bit_rate=64000");
 
 	private AudioCodecType audioCodecType;
 	private int bitRate;
