@@ -92,13 +92,61 @@ public class VideoCodecParams {
 	private static int[] GOP = { 0, 2, 3, 4, 5, 10, 20 };
 	private static int[] QUANTIZER = { 2, 3, 4, 5, 6, 8, 10, 12, 14, 15, 20, 25, 31 };
 
+//H.264
+//Bits/(Pixel*Frame)
+//			intra_only		gop2			gop5			gop10			gop20
+//		gop	0				2				5				10				20
+//		q	kbps			kbps			kbps			kbps			kbps
+//q10	10	3.8952020202	3.5560027357	3.3675952231	3.3202467382	3.3030829125
+//q20	20	2.0540693392	1.7770149411	1.6219486532	1.5824258207	1.5671033249
+//q25	25	1.3859953704	1.1491214226	1.0185185185	0.9863610059	0.9739977904
+//q30	30	0.8344512837	0.6508443813	0.5500315657	0.5262257997	0.5174794823
+//q32	32	0.6709017256	0.5108375421	0.4231770833	0.4023305976	0.3948337542
+//q34	34	0.5451651936	0.4050268308	0.3278882576	0.3099352904	0.3034906355
+//q36	36	0.423571654		0.3062526305	0.2419376052	0.2270754419	0.2214199285
+//q38	38	0.3382786195	0.2377946128	0.1827519992	0.1701257365	0.1653251263
+//q40	40	0.274950021		0.1884732744	0.1410590278	0.1302083333	0.1259995791
+//q42	42	0.2193813131	0.146188447		0.1058764731	0.0963410143	0.0925925926
+//q44	44	0.1805818603	0.1172532618	0.0821364689	0.0735216751	0.0699047769
+//q46	46	0.1479640152	0.0943681608	0.0644465488	0.0568839436	0.0536616162
+//q48	48	0.1201467803	0.0755602904	0.0503735269	0.0437973485	0.0409695918
+//q51	51	0.0929871633	0.0584622264	0.0387994529	0.033275463		0.0307107534
+
+	private static double[][] H264_BITS_PER_PIX_FRAME = {
+			{ 3.8952020202, 2.0540693392,
+					1.3859953704, 0.8344512837, 0.6709017256, 0.5451651936, 0.423571654, 0.3382786195,
+					0.274950021, 0.2193813131, 0.1805818603, 0.1479640152, 0.1201467803, 0.0929871633 },
+			{ 3.5560027357, 1.7770149411, 1.1491214226, 0.6508443813, 0.5108375421, 0.4050268308,
+					0.3062526305, 0.2377946128, 0.1884732744, 0.146188447, 0.1172532618,
+					0.0943681608, 0.0755602904, 0.0584622264 },
+			{ 3.3675952231, 1.6219486532, 1.0185185185, 0.5500315657, 0.4231770833, 0.3278882576,
+					0.2419376052, 0.1827519992, 0.1410590278, 0.1058764731, 0.0821364689,
+					0.0644465488, 0.0503735269, 0.0387994529 },
+			{ 3.3202467382, 1.5824258207, 0.9863610059, 0.5262257997, 0.4023305976, 0.3099352904,
+					0.2270754419, 0.1701257365, 0.1302083333, 0.0963410143, 0.0735216751,
+					0.0568839436, 0.0437973485, 0.033275463 },
+			{ 3.3030829125, 1.5671033249, 0.9739977904, 0.5174794823, 0.3948337542, 0.3034906355,
+					0.2214199285, 0.1653251263, 0.1259995791, 0.0925925926, 0.0699047769,
+					0.0536616162, 0.0409695918, 0.0307107534 }
+	};
+
+	private static int[] H264_GOP = { 0, 2, 5, 10, 20 };
+	private static int[] H264_QUANTIZER = { 10, 20, 25, 30, 32, 34, 36, 38, 40, 42, 44, 46, 48, 51 };
+
 	public static int getQMax(VideoInfoTx videoInfoTx) {
 		double[][] codecBitsPerPixFrame = null;
+		int[] gop = GOP;
+		int[] quantizer = QUANTIZER;
 
 		if (VideoCodecType.H263.equals(videoInfoTx.getVideoProfile().getVideoCodecType()))
 			codecBitsPerPixFrame = H263_BITS_PER_PIX_FRAME;
 		else if (VideoCodecType.MPEG4.equals(videoInfoTx.getVideoProfile().getVideoCodecType()))
 			codecBitsPerPixFrame = MPEG4_BITS_PER_PIX_FRAME;
+		else if (VideoCodecType.H264.equals(videoInfoTx.getVideoProfile().getVideoCodecType())) {
+			codecBitsPerPixFrame = H264_BITS_PER_PIX_FRAME;
+			gop = H264_GOP;
+			quantizer = H264_QUANTIZER;
+		}
 
 		if (codecBitsPerPixFrame == null)
 			return 31;
@@ -109,23 +157,23 @@ public class VideoCodecParams {
 						* (double) videoInfoTx.getVideoProfile().getFrameRateNum() / videoInfoTx
 						.getVideoProfile().getFrameRateDen());
 
-		int gopPos = GOP.length - 1;
-		for (int i = 0; i < GOP.length; i++) {
-			if (GOP[i] > videoInfoTx.getVideoProfile().getGopSize()) {
+		int gopPos = gop.length - 1;
+		for (int i = 0; i < gop.length; i++) {
+			if (gop[i] > videoInfoTx.getVideoProfile().getGopSize()) {
 				gopPos = i - 1;
 				break;
 			}
 		}
 
-		int qPos = QUANTIZER.length - 1;
-		for (int i = 0; i < QUANTIZER.length; i++) {
+		int qPos = quantizer.length - 1;
+		for (int i = 0; i < quantizer.length; i++) {
 			if (codecBitsPerPixFrame[gopPos][i] < bitsPerPixFrame) {
 				qPos = i;
 				break;
 			}
 		}
 
-		return QUANTIZER[qPos];
+		return quantizer[qPos];
 	}
 
 }
