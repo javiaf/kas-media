@@ -23,10 +23,10 @@ package com.kurento.kas.media.rx;
  * 
  */
 public class MediaRx {
-	public static native int startVideoRx(String sdp_str, VideoRx videoPlayer);
+	public static native int startVideoRx(String sdp_str, int maxDelay, VideoRx videoPlayer);
 	public static native int stopVideoRx();
 	
-	public static native int startAudioRx(String sdp_str, AudioRx audioPlayer);
+	public static native int startAudioRx(String sdp_str, int maxDelay, AudioRx audioPlayer);
 	public static native int stopAudioRx();
 	
 	static {
