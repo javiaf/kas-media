@@ -17,6 +17,8 @@
 
 package com.kurento.kas.media.tx;
 
+import com.kurento.kas.media.Native;
+
 /**
  * <p>
  * Provides static methods that map native media functions.
@@ -26,7 +28,7 @@ package com.kurento.kas.media.tx;
  * @author mparis
  * 
  */
-public class MediaTx {
+public class MediaTx extends Native {
 
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
@@ -65,9 +67,5 @@ public class MediaTx {
 	public static native int putAudioSamples(short[] in_buffer, int in_size);
 
 	public static native int finishAudio();
-
-	static {
-		System.loadLibrary("kas-media-native");
-	}
 
 }

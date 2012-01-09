@@ -17,12 +17,14 @@
 
 package com.kurento.kas.media.rx;
 
+import com.kurento.kas.media.Native;
+
 /**
  * 
  * @author mparis
  * 
  */
-public class MediaRx {
+public class MediaRx extends Native {
 
 	public static final int DEFAULT_MAX_DELAY = 200;
 
@@ -31,9 +33,5 @@ public class MediaRx {
 	
 	public static native int startAudioRx(String sdp_str, int maxDelay, AudioRx audioPlayer);
 	public static native int stopAudioRx();
-	
-	static {
-		System.loadLibrary("kas-media-native");
-	}
 	
 }

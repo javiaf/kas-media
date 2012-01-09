@@ -17,7 +17,9 @@
 
 package com.kurento.kas.media.ports;
 
-public class MediaPortManager {
+import com.kurento.kas.media.Native;
+
+public class MediaPortManager extends Native {
 
 	public static int takeAudioLocalPort(){
 		return takeAudioLocalPort(-1);
@@ -30,9 +32,5 @@ public class MediaPortManager {
 	}
 	public static native int takeVideoLocalPort(int videoPort);
 	public static native void releaseVideoLocalPort();
-	
-	static {
-		System.loadLibrary("kas-media-native");
-	}
-	
+
 }
