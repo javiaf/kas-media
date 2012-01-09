@@ -23,6 +23,9 @@ package com.kurento.kas.media.rx;
  * 
  */
 public class MediaRx {
+
+	public static final int DEFAULT_MAX_DELAY = 200;
+
 	public static native int startVideoRx(String sdp_str, int maxDelay, VideoRx videoPlayer);
 	public static native int stopVideoRx();
 	
