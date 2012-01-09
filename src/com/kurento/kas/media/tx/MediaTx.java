@@ -17,8 +17,6 @@
 
 package com.kurento.kas.media.tx;
 
-import com.kurento.kas.media.codecs.VideoCodecParams;
-
 /**
  * <p>
  * Provides static methods that map native media functions.
@@ -33,16 +31,15 @@ public class MediaTx {
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
-			int qmax, int codecId, int payload_type);
+			int codecId, int payload_type);
 
 	public static int initVideo(VideoInfoTx videoInfoTx) {
-		int qmax = VideoCodecParams.getQMax(videoInfoTx);
 		return initVideo(videoInfoTx.getOut(), videoInfoTx.getVideoProfile()
 				.getWidth(), videoInfoTx.getVideoProfile().getHeight(),
 				videoInfoTx.getVideoProfile().getFrameRateNum(), videoInfoTx
 						.getVideoProfile().getFrameRateDen(), videoInfoTx
 						.getVideoProfile().getBitRate(), videoInfoTx
-						.getVideoProfile().getGopSize(), qmax, videoInfoTx
+						.getVideoProfile().getGopSize(), videoInfoTx
 						.getVideoProfile().getVideoCodecType().getCodecID(),
 				videoInfoTx.getPayloadType());
 	}
