@@ -30,7 +30,9 @@ import com.kurento.kas.media.exception.CodecNotSupportedException;
 public enum AudioCodecType {
 	AMR(0, 8000, 12200, new String[]{ "AMR", "AMR-NB" }),
 	MP2(1, 44100, 64000, new String[]{ "MP2", "MPA" }),
-	AAC(2, 44100, 64000, new String[]{ "AAC" });
+	AAC(2, 44100, 64000, new String[]{ "AAC" }),
+	PCMU(3, 8000, 64000, new String[]{ "PCMU" }),
+	PCMA(4, 8000, 64000, new String[]{ "PCMA" });
 	
 	private int codecID;
 	private int supportedSampleRate;
@@ -69,6 +71,10 @@ public enum AudioCodecType {
 			return MP2.codecID;
 		else if (AAC.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AAC.codecID;
+		else if (PCMU.collectionCodecStrings.contains(codecName.toUpperCase()))
+			return PCMU.codecID;
+		else if (PCMA.collectionCodecStrings.contains(codecName.toUpperCase()))
+			return PCMA.codecID;
 
 		throw new CodecNotSupportedException("Codec not supported");
 	}
@@ -80,6 +86,10 @@ public enum AudioCodecType {
 			return MP2;
 		else if (AAC.collectionCodecStrings.contains(codecName.toUpperCase()))
 			return AAC;
+		else if (PCMU.collectionCodecStrings.contains(codecName.toUpperCase()))
+			return PCMU;
+		else if (PCMA.collectionCodecStrings.contains(codecName.toUpperCase()))
+			return PCMA;
 
 		throw new CodecNotSupportedException("Codec not supported");
 	}
