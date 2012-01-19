@@ -25,12 +25,12 @@ public class MediaPortManager extends Native {
 		return takeAudioLocalPort(-1);
 	}
 	public static native int takeAudioLocalPort(int audioPort);
-	public static native void releaseAudioLocalPort();
+	public static native int releaseAudioLocalPort();
 	
 	public static int takeVideoLocalPort() {
 		return takeVideoLocalPort(-1);
 	}
 	public static native int takeVideoLocalPort(int videoPort);
-	public static native void releaseVideoLocalPort();
+	public static native int releaseVideoLocalPort();
 
 }
