@@ -24,6 +24,6 @@ package com.kurento.kas.media.rx;
  */
 public interface VideoRx {
 
-	public void putVideoFrameRx(int[] rgb, int width, int height);
+	public void putVideoFrameRx(int[] rgb, int width, int height, int nFrame);
 
 }
