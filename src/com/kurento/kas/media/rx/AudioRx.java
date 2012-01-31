@@ -24,6 +24,6 @@ package com.kurento.kas.media.rx;
  */
 public interface AudioRx {
 
-	public void putAudioSamplesRx(byte[] audio, int length);
+	public void putAudioSamplesRx(byte[] audio, int length, int nFrame);
 
 }
