@@ -28,10 +28,12 @@ public class MediaRx extends Native {
 
 	public static final int DEFAULT_MAX_DELAY = 200;
 
-	public static native int startVideoRx(String sdp_str, int maxDelay, VideoRx videoPlayer);
+	public static native int startVideoRx(String sdp, int maxDelay,
+			VideoRx videoReceiver);
 	public static native int stopVideoRx();
 	
-	public static native int startAudioRx(String sdp_str, int maxDelay, AudioRx audioPlayer);
+	public static native int startAudioRx(String sdp, int maxDelay,
+			AudioRx audioReceiver);
 	public static native int stopAudioRx();
 	
 }
