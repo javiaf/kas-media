@@ -23,9 +23,7 @@ import java.util.Collection;
 import com.kurento.kas.media.exception.CodecNotSupportedException;
 
 /**
- * 
- * @author mparis
- * 
+ * Supported audio codecs.
  */
 public enum AudioCodecType {
 	AMR(0, 8000, 12200, new String[]{ "AMR", "AMR-NB" }),

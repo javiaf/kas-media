@@ -17,13 +17,20 @@
 
 package com.kurento.kas.media.rx;
 
-/**
- * 
- * @author mparis
- * 
- */
 public interface VideoRx {
 
+	/**
+	 * Receive a video frame.
+	 * 
+	 * @param rgb
+	 *            video frame in RGB32.
+	 * @param width
+	 *            frame width in pixels.
+	 * @param height
+	 *            frame height in pixels.
+	 * @param nFrame
+	 *            video frame id.
+	 */
 	public void putVideoFrameRx(int[] rgb, int width, int height, int nFrame);
 
 }
