@@ -20,9 +20,7 @@ package com.kurento.kas.media.tx;
 import com.kurento.kas.media.profiles.AudioProfile;
 
 /**
- * 
- * @author mparis
- * 
+ * This class represents all needed information to encode and mux audio samples.
  */
 public class AudioInfoTx {
 

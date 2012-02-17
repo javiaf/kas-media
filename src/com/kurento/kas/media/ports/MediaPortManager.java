@@ -17,22 +17,49 @@
 
 package com.kurento.kas.media.ports;
 
-public class MediaPortManager {
+import com.kurento.kas.media.Native;
 
-	public static int takeAudioLocalPort(){
+public class MediaPortManager extends Native {
+
+	/**
+	 * Retrive a free local port for audio.
+	 * 
+	 * @return the local port taken.
+	 */
+	public static int takeAudioLocalPort() {
 		return takeAudioLocalPort(-1);
 	}
+
+	/**
+	 * Try to retrieve the audioPort local port for audio.
+	 * 
+	 * @param audioPort
+	 * @return the local port taken.
+	 */
 	public static native int takeAudioLocalPort(int audioPort);
-	public static native void releaseAudioLocalPort();
-	
+
+	/**
+	 * Indicate that the audio local port taken by
+	 * {@link MediaPortManager#takeAudioLocalPort takeAudioLocalPort} will not
+	 * be used.
+	 * 
+	 * @return the remaining processes that are using the audio port.
+	 */
+	public static native int releaseAudioLocalPort();
+
 	public static int takeVideoLocalPort() {
 		return takeVideoLocalPort(-1);
 	}
+
 	public static native int takeVideoLocalPort(int videoPort);
-	public static native void releaseVideoLocalPort();
-	
-	static {
-		System.loadLibrary("kas-media-native");
-	}
-	
+
+	/**
+	 * Indicate that the video local port taken by
+	 * {@link MediaPortManager#takeAudioLocalPort takeAudioLocalPort} will not
+	 * be used.
+	 * 
+	 * @return the remaining processes that are using the video port.
+	 */
+	public static native int releaseVideoLocalPort();
+
 }

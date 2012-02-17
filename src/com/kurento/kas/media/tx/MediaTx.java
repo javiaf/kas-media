@@ -17,7 +17,7 @@
 
 package com.kurento.kas.media.tx;
 
-import com.kurento.kas.media.codecs.VideoCodecParams;
+import com.kurento.kas.media.Native;
 
 /**
  * <p>
@@ -28,36 +28,65 @@ import com.kurento.kas.media.codecs.VideoCodecParams;
  * @author mparis
  * 
  */
-public class MediaTx {
+public class MediaTx extends Native {
 
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
-			int qmax, int codecId, int payload_type);
+			int codecId, int payload_type);
 
+	/**
+	 * Initialize video transmission with the configuration of videoInfoTx.
+	 * 
+	 * @param videoInfoTx
+	 * @return <0 if error.
+	 */
 	public static int initVideo(VideoInfoTx videoInfoTx) {
-		int qmax = VideoCodecParams.getQMax(videoInfoTx);
 		return initVideo(videoInfoTx.getOut(), videoInfoTx.getVideoProfile()
 				.getWidth(), videoInfoTx.getVideoProfile().getHeight(),
 				videoInfoTx.getVideoProfile().getFrameRateNum(), videoInfoTx
 						.getVideoProfile().getFrameRateDen(), videoInfoTx
 						.getVideoProfile().getBitRate(), videoInfoTx
-						.getVideoProfile().getGopSize(), qmax, videoInfoTx
+						.getVideoProfile().getGopSize(), videoInfoTx
 						.getVideoProfile().getVideoCodecType().getCodecID(),
 				videoInfoTx.getPayloadType());
 	}
 
+	/**
+	 * Receive a video frame in NV21, encode it with the parameters set with
+	 * {@link MediaTx#initVideo initVideo} and write to file or send it through
+	 * RTP.
+	 * 
+	 * @param frame
+	 *            video frame in NV21 format.
+	 * @param width
+	 *            video frame width in pixels.
+	 * @param height
+	 *            video frame height in pixels.
+	 * @return <0 if error.
+	 */
 	public static native int putVideoFrame(byte[] frame, int width, int height);
 
+	/**
+	 * 
+	 * @return <0 if error.
+	 */
 	public static native int finishVideo();
 
 	// AUDIO
 	/**
-	 * Returns the frame size used to encode
+	 * Returns the audio frame size (number of samples) used to encode.
 	 */
 	private static native int initAudio(String outfile, int codec_id,
 			int sample_rate, int bit_rate, int payload_type);
 
+	/**
+	 * Initialize audio transmission with the configuration of audioInfoTx.
+	 * 
+	 * @param audioInfoTx
+	 * @return <0 if error, else the audio frame size (number of samples) used
+	 *         to encode.
+	 */
 	public static int initAudio(AudioInfoTx audioInfoTx) {
 		return initAudio(audioInfoTx.getOut(), audioInfoTx.getAudioProfile()
 				.getAudioCodecType().getCodecID(), audioInfoTx
@@ -65,12 +94,21 @@ public class MediaTx {
 				.getAudioProfile().getBitRate(), audioInfoTx.getPayloadType());
 	}
 
+	/**
+	 * Receive an audio frame (set of audio samples) in PCM16, encode them with
+	 * the parameters set with {@link MediaTx#initAudio initAudio} and write to
+	 * file or send it through RTP.
+	 * 
+	 * @param in_buffer
+	 * @param in_size
+	 * @return
+	 */
 	public static native int putAudioSamples(short[] in_buffer, int in_size);
 
+	/**
+	 * 
+	 * @return <0 if error.
+	 */
 	public static native int finishAudio();
-
-	static {
-		System.loadLibrary("kas-media-native");
-	}
 
 }

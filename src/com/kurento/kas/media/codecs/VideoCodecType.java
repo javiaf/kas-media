@@ -23,9 +23,7 @@ import java.util.Collection;
 import com.kurento.kas.media.exception.CodecNotSupportedException;
 
 /**
- * 
- * @author mparis
- * 
+ * Supported video codecs.
  */
 public enum VideoCodecType {
 	H264(0, new String[]{ "H264" }),

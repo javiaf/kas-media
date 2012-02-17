@@ -20,9 +20,7 @@ package com.kurento.kas.media.tx;
 import com.kurento.kas.media.profiles.VideoProfile;
 
 /**
- * 
- * @author mparis
- * 
+ * This class represents all needed information to encode and mux video frames.
  */
 public class VideoInfoTx {
 

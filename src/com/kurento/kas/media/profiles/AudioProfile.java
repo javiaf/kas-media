@@ -25,7 +25,11 @@ public enum AudioProfile {
 	MP2(AudioCodecType.MP2, AudioCodecType.MP2.getSupportedBitRate(),
 			AudioCodecType.MP2.getSupportedSampleRate(), "mp2 bit_rate=64000"),
 	AAC(AudioCodecType.AAC, AudioCodecType.AAC.getSupportedBitRate(),
-			AudioCodecType.AAC.getSupportedSampleRate(), "aac bit_rate=64000");
+			AudioCodecType.AAC.getSupportedSampleRate(), "aac bit_rate=64000"),
+	PCMU(AudioCodecType.PCMU, AudioCodecType.PCMU.getSupportedBitRate(),
+			AudioCodecType.PCMU.getSupportedSampleRate(), "pcmu bit_rate=64000"),
+	PCMA(AudioCodecType.PCMA, AudioCodecType.PCMA.getSupportedBitRate(),
+			AudioCodecType.PCMA.getSupportedSampleRate(), "pcma bit_rate=64000");
 
 	private AudioCodecType audioCodecType;
 	private int bitRate;
@@ -62,6 +66,12 @@ public enum AudioProfile {
 			return AMR;
 		if (MP2.audioCodecType.equals(audioCodecType))
 			return MP2;
+		if (AAC.audioCodecType.equals(audioCodecType))
+			return AAC;
+		if (PCMU.audioCodecType.equals(audioCodecType))
+			return PCMU;
+		if (PCMA.audioCodecType.equals(audioCodecType))
+			return PCMA;
 
 		return null;
 	}

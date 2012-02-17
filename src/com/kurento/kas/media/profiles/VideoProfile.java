@@ -19,6 +19,10 @@ package com.kurento.kas.media.profiles;
 
 import com.kurento.kas.media.codecs.VideoCodecType;
 
+/**
+ * This class represents all configurable video parameters needed to encode a
+ * video frame.
+ */
 public class VideoProfile {
 
 	public static final int DEFAULT_WIDTH = 352;
