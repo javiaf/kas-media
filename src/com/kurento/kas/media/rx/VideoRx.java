@@ -22,15 +22,8 @@ public interface VideoRx {
 	/**
 	 * Receive a video frame.
 	 * 
-	 * @param rgb
-	 *            video frame in RGB32.
-	 * @param width
-	 *            frame width in pixels.
-	 * @param height
-	 *            frame height in pixels.
-	 * @param nFrame
-	 *            video frame id.
+	 * @param videoFrame
 	 */
-	public void putVideoFrameRx(int[] rgb, int width, int height, int nFrame);
+	public void putVideoFrameRx(VideoFrame videoFrame);
 
 }
