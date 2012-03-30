@@ -20,15 +20,10 @@ package com.kurento.kas.media.rx;
 public interface AudioRx {
 
 	/**
-	 * Receive a set of audio samples.
+	 * Receive audio samples
 	 * 
-	 * @param audio
-	 *            audio samples in PCM16.
-	 * @param length
-	 *            number of audio samples.
-	 * @param nFrame
-	 *            audio frame id.
+	 * @param audioSamples
 	 */
-	public void putAudioSamplesRx(byte[] audio, int length, int nFrame);
+	public void putAudioSamplesRx(AudioSamples audioSamples);
 
 }
