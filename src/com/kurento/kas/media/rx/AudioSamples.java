@@ -8,15 +8,17 @@ public class AudioSamples {
 	private int timeBaseDen;
 	private long pts;
 	private long startTime;
+	private long rxTime;
 
 	public AudioSamples(byte[] dataSamples, int size, int timeBaseNum,
-			int timeBaseDen, long pts, long startTime) {
+			int timeBaseDen, long pts, long startTime, long rxTime) {
 		this.dataSamples = dataSamples;
 		this.size = size;
 		this.timeBaseNum = timeBaseNum;
 		this.timeBaseDen = timeBaseDen;
 		this.pts = pts;
 		this.startTime = startTime;
+		this.rxTime = rxTime;
 	}
 
 	public byte[] getDataSamples() {
@@ -41,6 +43,10 @@ public class AudioSamples {
 
 	public long getStartTime() {
 		return startTime;
+	}
+
+	public long getRxTime() {
+		return rxTime;
 	}
 
 }
