@@ -63,9 +63,14 @@ public class MediaTx extends Native {
 	 *            video frame width in pixels.
 	 * @param height
 	 *            video frame height in pixels.
+	 * @param time
+	 *            Time in milliseconds when the frame is captured relative to
+	 *            the first frame in the video sequence. It is used to assign a
+	 *            correct pts.
 	 * @return <0 if error.
 	 */
-	public static native int putVideoFrame(byte[] frame, int width, int height);
+	public static native int putVideoFrame(byte[] frame, int width, int height,
+			long time);
 
 	/**
 	 * 
