@@ -26,4 +26,12 @@ public interface VideoRx {
 	 */
 	public void putVideoFrameRx(VideoFrame videoFrame);
 
+	/**
+	 * 
+	 * @param size
+	 *            in bytes. Must be multiple of (Integer.SIZE / 8).
+	 * @return a int array (int[]) with length size/(Integer.SIZE / 8).
+	 */
+	public int[] getFrameBuffer(int size);
+
 }
