@@ -6,8 +6,9 @@ public class AudioSamples extends RxPacket {
 	private int size;
 
 	public AudioSamples(byte[] dataSamples, int size, int timeBaseNum,
-			int timeBaseDen, long pts, long startTime, long rxTime) {
-		super(timeBaseNum, timeBaseDen, pts, startTime, rxTime);
+			int timeBaseDen, long pts, long startTime, long rxTime,
+			int encodedSize) {
+		super(timeBaseNum, timeBaseDen, pts, startTime, rxTime, encodedSize);
 		this.dataSamples = dataSamples;
 		this.size = size;
 	}
