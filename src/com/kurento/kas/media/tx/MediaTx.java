@@ -69,8 +69,14 @@ public class MediaTx extends Native {
 	 *            correct pts.
 	 * @return <0 if error.
 	 */
-	public static native int putVideoFrame(byte[] frame, int width, int height,
+	private static native int putVideoFrame(byte[] frame, int width,
+			int height,
 			long time);
+
+	public static int putVideoFrame(VideoFrameTx vf) {
+		return putVideoFrame(vf.getDataFrame(), vf.getWidth(), vf.getHeight(),
+				vf.getTime());
+	}
 
 	/**
 	 * 
