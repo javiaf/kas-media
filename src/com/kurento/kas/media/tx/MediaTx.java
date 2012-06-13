@@ -114,8 +114,12 @@ public class MediaTx extends Native {
 	 * @param in_size
 	 * @return
 	 */
-	public static native int putAudioSamples(short[] in_buffer, int in_size,
+	private static native int putAudioSamples(short[] in_buffer, int in_size,
 			long time);
+
+	public static int putAudioSamples(AudioSamplesTx as) {
+		return putAudioSamples(as.getDataSamples(), as.getSize(), as.getTime());
+	}
 
 	/**
 	 * 
