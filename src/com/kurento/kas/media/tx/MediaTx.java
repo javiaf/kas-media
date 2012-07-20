@@ -18,6 +18,7 @@
 package com.kurento.kas.media.tx;
 
 import com.kurento.kas.media.Native;
+import com.kurento.kas.media.codecs.VideoCodecType;
 
 /**
  * <p>
@@ -33,7 +34,7 @@ public class MediaTx extends Native {
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
-			int codecId, int payload_type);
+			VideoCodecType videoCodecType, int payload_type);
 
 	/**
 	 * Initialize video transmission with the configuration of videoInfoTx.
@@ -48,7 +49,7 @@ public class MediaTx extends Native {
 						.getVideoProfile().getFrameRateDen(), videoInfoTx
 						.getVideoProfile().getBitRate(), videoInfoTx
 						.getVideoProfile().getGopSize(), videoInfoTx
-						.getVideoProfile().getVideoCodecType().getCodecID(),
+						.getVideoProfile().getVideoCodecType(),
 				videoInfoTx.getPayloadType());
 	}
 
