@@ -18,6 +18,7 @@
 package com.kurento.kas.media.tx;
 
 import com.kurento.kas.media.Native;
+import com.kurento.kas.media.codecs.AudioCodecType;
 import com.kurento.kas.media.codecs.VideoCodecType;
 
 /**
@@ -89,7 +90,8 @@ public class MediaTx extends Native {
 	/**
 	 * Returns the audio frame size (number of samples) used to encode.
 	 */
-	private static native int initAudio(String outfile, int codec_id,
+	private static native int initAudio(String outfile,
+			AudioCodecType audioCodectype,
 			int sample_rate, int bit_rate, int payload_type);
 
 	/**
@@ -101,7 +103,7 @@ public class MediaTx extends Native {
 	 */
 	public static int initAudio(AudioInfoTx audioInfoTx) {
 		return initAudio(audioInfoTx.getOut(), audioInfoTx.getAudioProfile()
-				.getAudioCodecType().getCodecID(), audioInfoTx
+				.getAudioCodecType(), audioInfoTx
 				.getAudioProfile().getSampleRate(), audioInfoTx
 				.getAudioProfile().getBitRate(), audioInfoTx.getPayloadType());
 	}
