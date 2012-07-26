@@ -21,15 +21,34 @@ import com.kurento.kas.media.Native;
 
 public class MediaPortManager extends Native {
 
+	/**
+	 * Retrieve a free local port.
+	 * 
+	 * @return a {@link MediaPort} related with the local port binded.
+	 */
 	public static MediaPort takeMediaPort() {
 		return takeMediaPort(0);
 	}
 
+	/**
+	 * Retrieve a local port.
+	 * 
+	 * @param port
+	 *            to be binded.
+	 * @returna {@link MediaPort} related with the local port binded.
+	 */
 	public static MediaPort takeMediaPort(int port) {
 		long mp = takeMediaPortNative(port);
 		return new MediaPort(mp);
 	}
 
+	/**
+	 * Release a {@link MediaPort}.
+	 * 
+	 * @param mediaPort
+	 *            to be released
+	 * @return the number of users of this the mediaPort.
+	 */
 	public static int releaseMediaPort(MediaPort mediaPort) {
 		return releaseMediaPortNative(mediaPort.getSelf());
 	}
