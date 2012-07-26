@@ -18,6 +18,7 @@
 package com.kurento.kas.media.rx;
 
 import com.kurento.kas.media.Native;
+import com.kurento.kas.media.ports.MediaPort;
 
 public class MediaRx extends Native {
 
@@ -37,8 +38,14 @@ public class MediaRx extends Native {
 	 * 
 	 * @return <0 if error.
 	 */
-	public static native int startVideoRx(String sdp, int maxDelay,
-			VideoRx videoReceiver);
+	private static native int startVideoRx(long videoMediaPortRef, String sdp,
+			int maxDelay, VideoRx videoReceiver);
+
+	public static int startVideoRx(MediaPort videoMediaPort, String sdp,
+			int maxDelay, VideoRx videoReceiver) {
+		return startVideoRx(videoMediaPort.getSelf(), sdp, maxDelay,
+				videoReceiver);
+	}
 
 	/**
 	 * Stop video reception.
@@ -60,8 +67,14 @@ public class MediaRx extends Native {
 	 *            object that receive decoded audio frames.
 	 * @return
 	 */
-	public static native int startAudioRx(String sdp, int maxDelay,
-			AudioRx audioReceiver);
+	private static native int startAudioRx(long audioMediaPortRef, String sdp,
+			int maxDelay, AudioRx audioReceiver);
+
+	public static int startAudioRx(MediaPort audioMediaPort, String sdp,
+			int maxDelay, AudioRx audioReceiver) {
+		return startAudioRx(audioMediaPort.getSelf(), sdp, maxDelay,
+				audioReceiver);
+	}
 
 	/**
 	 * Stop audio reception.

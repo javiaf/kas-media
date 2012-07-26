@@ -20,6 +20,7 @@ package com.kurento.kas.media.tx;
 import com.kurento.kas.media.Native;
 import com.kurento.kas.media.codecs.AudioCodecType;
 import com.kurento.kas.media.codecs.VideoCodecType;
+import com.kurento.kas.media.ports.MediaPort;
 
 /**
  * <p>
@@ -35,7 +36,8 @@ public class MediaTx extends Native {
 	// VIDEO
 	private static native int initVideo(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
-			VideoCodecType videoCodecType, int payload_type);
+			VideoCodecType videoCodecType, int payload_type,
+			long videoMediaPortRef);
 
 	/**
 	 * Initialize video transmission with the configuration of videoInfoTx.
@@ -43,7 +45,8 @@ public class MediaTx extends Native {
 	 * @param videoInfoTx
 	 * @return <0 if error.
 	 */
-	public static int initVideo(VideoInfoTx videoInfoTx) {
+	public static int initVideo(VideoInfoTx videoInfoTx,
+			MediaPort videoMediaPort) {
 		return initVideo(videoInfoTx.getOut(), videoInfoTx.getVideoProfile()
 				.getWidth(), videoInfoTx.getVideoProfile().getHeight(),
 				videoInfoTx.getVideoProfile().getFrameRateNum(), videoInfoTx
@@ -51,7 +54,7 @@ public class MediaTx extends Native {
 						.getVideoProfile().getBitRate(), videoInfoTx
 						.getVideoProfile().getGopSize(), videoInfoTx
 						.getVideoProfile().getVideoCodecType(),
-				videoInfoTx.getPayloadType());
+				videoInfoTx.getPayloadType(), videoMediaPort.getSelf());
 	}
 
 	/**
@@ -91,8 +94,8 @@ public class MediaTx extends Native {
 	 * Returns the audio frame size (number of samples) used to encode.
 	 */
 	private static native int initAudio(String outfile,
-			AudioCodecType audioCodectype,
-			int sample_rate, int bit_rate, int payload_type);
+			AudioCodecType audioCodectype, int sample_rate, int bit_rate,
+			int payload_type, long audioMediaPortRef);
 
 	/**
 	 * Initialize audio transmission with the configuration of audioInfoTx.
@@ -101,11 +104,12 @@ public class MediaTx extends Native {
 	 * @return <0 if error, else the audio frame size (number of samples) used
 	 *         to encode.
 	 */
-	public static int initAudio(AudioInfoTx audioInfoTx) {
+	public static int initAudio(AudioInfoTx audioInfoTx,
+			MediaPort audioMediaPort) {
 		return initAudio(audioInfoTx.getOut(), audioInfoTx.getAudioProfile()
-				.getAudioCodecType(), audioInfoTx
-				.getAudioProfile().getSampleRate(), audioInfoTx
-				.getAudioProfile().getBitRate(), audioInfoTx.getPayloadType());
+				.getAudioCodecType(), audioInfoTx.getAudioProfile()
+				.getSampleRate(), audioInfoTx.getAudioProfile().getBitRate(),
+				audioInfoTx.getPayloadType(), audioMediaPort.getSelf());
 	}
 
 	/**

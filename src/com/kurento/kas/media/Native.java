@@ -6,4 +6,10 @@ public class Native {
 		System.loadLibrary("kas-media-native");
 	}
 
+	protected long self;
+
+	public long getSelf() {
+		return self;
+	}
+
 }
