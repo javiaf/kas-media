@@ -1,5 +1,7 @@
+.project
 .classpath
 .settings/
+project.properties
 libs/
 obj/
 target/
