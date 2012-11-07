@@ -13,6 +13,12 @@
 	<properties>
 		<project.build.sourceEncoding>UTF-8 </project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<maven.compiler.source>1.6</maven.compiler.source>
+		<maven.compiler.target>1.6</maven.compiler.target>
+
+		<!-- Dependencies versions -->
+		<kas-media-native.version>1.2.2</kas-media-native.version>
+
 	</properties>
 
 	<organization>
@@ -59,38 +65,16 @@
 		<dependency>
 			<groupId>com.kurento.kas</groupId>
 			<artifactId>kas-media-native</artifactId>
-			<version>1.2.2-SNAPSHOT</version>
+			<version>${kas-media-native.version}</version>
 			<type>so</type>
 			<classifier>armeabi</classifier>
 			<scope>runtime</scope>
 		</dependency>
-		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android</artifactId>
-			<version>2.3.3</version>
-			<scope>provided</scope>
-		</dependency>
 	</dependencies>
 
 	<build>
-		<finalName>${project.artifactId}</finalName>
 		<sourceDirectory>src</sourceDirectory>
 		<plugins>
-
-			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<configuration>
-					<source>1.6</source>
-					<target>1.6</target>
-				</configuration>
-			</plugin>
-
-			<plugin>
-				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
-				<artifactId>maven-android-plugin</artifactId>
-				<version>3.0.0-alpha-2</version>
-				<extensions>true</extensions>
-			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-site-plugin</artifactId>
@@ -99,7 +83,6 @@
 					<locales>en</locales>
 					<encoding>UTF-8</encoding>
 					<siteDirectory>${basedir}/site</siteDirectory>
-					<tempWebappDirectory>${basedir}/target/site</tempWebappDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
@@ -108,7 +91,6 @@
 				<version>2.7</version>
 			</plugin>
 		</plugins>
-
 		<extensions>
 			<extension>
 				<groupId>org.apache.maven.wagon</groupId>
