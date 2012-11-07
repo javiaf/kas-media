@@ -73,7 +73,6 @@
 	</dependencies>
 
 	<build>
-		<sourceDirectory>src</sourceDirectory>
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -82,7 +81,6 @@
 				<configuration>
 					<locales>en</locales>
 					<encoding>UTF-8</encoding>
-					<siteDirectory>${basedir}/site</siteDirectory>
 				</configuration>
 			</plugin>
 			<plugin>
