@@ -42,6 +42,11 @@ public class MediaPortManager extends Native {
 		return new MediaPort(mp);
 	}
 
+	public static MediaPort takeMediaPort(String address, int port) {
+		long mp = takeMediaAddressPortNative(address, port);
+		return new MediaPort(mp);
+	}
+
 	/**
 	 * Release a {@link MediaPort}.
 	 * 
@@ -54,6 +59,9 @@ public class MediaPortManager extends Native {
 	}
 
 	private static native long takeMediaPortNative(int port);
+
+	private static native long takeMediaAddressPortNative(String address,
+			int port);
 
 	private static native int releaseMediaPortNative(long mediaPortRef);
 
