@@ -134,4 +134,15 @@ public class MediaTx extends Native {
 	 */
 	public static native int finishAudio();
 
+	public static native int initVideoJava(String outfile, int width, int height,
+			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
+			int payload_type, long videoMediaPortRef, String jmimetype,
+			String jcodec, String jcolor);
+
+	public static native int putVideoFrameJava(byte[] frame, int width, int height,
+			long time);
+
+	public static native int finishVideoJava();
+
+
 }
