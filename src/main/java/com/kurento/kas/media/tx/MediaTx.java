@@ -20,6 +20,7 @@ package com.kurento.kas.media.tx;
 import com.kurento.kas.media.Native;
 import com.kurento.kas.media.codecs.AudioCodecType;
 import com.kurento.kas.media.codecs.VideoCodecType;
+import com.kurento.kas.media.codecs.VideoMediaCodecType;
 import com.kurento.kas.media.ports.MediaPort;
 
 /**
@@ -134,10 +135,36 @@ public class MediaTx extends Native {
 	 */
 	public static native int finishAudio();
 
+
+	/**
+	 * Initialize video transmission with the configuration of videoInfoTx.
+	 * 
+	 * @param videoInfoTx
+	 * @return <0 if error.
+	 */
+	public static int initVideoJava(VideoInfoTx videoInfoTx,
+			MediaPort videoMediaPort) {
+		return initVideoJava(videoInfoTx.getOut(), videoInfoTx.getVideoProfile()
+				.getWidth(), videoInfoTx.getVideoProfile().getHeight(),
+				videoInfoTx.getVideoProfile().getFrameRateNum(), videoInfoTx
+						.getVideoProfile().getFrameRateDen(), videoInfoTx
+						.getVideoProfile().getBitRate(), videoInfoTx
+						.getVideoProfile().getGopSize(),
+				videoInfoTx.getPayloadType(), videoMediaPort.getSelf(), 
+				VideoMediaCodecType.getVideoMediaCodecType(videoInfoTx.
+				getVideoProfile().getVideoCodecType()),"", 
+				videoInfoTx.getVideoProfile().getJavaColor());
+	}
+
 	public static native int initVideoJava(String outfile, int width, int height,
 			int frame_rate_num, int frame_rate_den, int bit_rate, int gop_size,
 			int payload_type, long videoMediaPortRef, String jmimetype,
 			String jcodec, String jcolor);
+
+	public static int putVideoFrameJava(VideoFrameTx vf) {
+		return putVideoFrame(vf.getDataFrame(), vf.getWidth(), vf.getHeight(),
+				vf.getTime());
+	}
 
 	public static native int putVideoFrameJava(byte[] frame, int width, int height,
 			long time);

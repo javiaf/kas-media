@@ -29,6 +29,7 @@ public class VideoProfile {
 	public static final int DEFAULT_HEIGHT = 288;
 	public static final int DEFAULT_FRAME_RATE = 15;
 	public static final int DEFAULT_GOP_SIZE = 6;
+	public static final String DEFAULT_JCOLOR = "YUV420SemiPlanar";
 
 	private VideoCodecType videoCodecType;
 	private int width;
@@ -38,6 +39,8 @@ public class VideoProfile {
 	private int bitRate;
 	private int gopSize;
 	private String description;
+	private String jColor;
+
 
 	public VideoCodecType getVideoCodecType() {
 		return videoCodecType;
@@ -71,6 +74,10 @@ public class VideoProfile {
 		return description;
 	}
 
+	public String getJavaColor() {
+		return jColor;
+	}
+
 	public void setWidth(int width) {
 		this.width = width;
 	}
@@ -95,6 +102,11 @@ public class VideoProfile {
 		this.gopSize = gopSize;
 	}
 
+	public void setJavaColor(String jColor) {
+		this.jColor = jColor;
+	}
+
+
 	/**
 	 * Contructor to asign default falues of:
 	 * <ul>
@@ -115,6 +127,8 @@ public class VideoProfile {
 		this.frameRateDen = 1;
 		this.gopSize = DEFAULT_GOP_SIZE;
 		this.bitRate = bitRate;
+		this.jColor = DEFAULT_JCOLOR;
+
 	}
 
 	public VideoProfile(VideoCodecType videoCodecType, int width, int height,
