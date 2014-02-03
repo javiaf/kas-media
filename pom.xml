@@ -70,6 +70,12 @@
 			<classifier>armeabi</classifier>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>android</groupId>
+			<artifactId>android</artifactId>
+			<version>4.1.2_r4</version>
+			<scope>provided</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
