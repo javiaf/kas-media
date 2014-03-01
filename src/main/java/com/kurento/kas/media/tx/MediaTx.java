@@ -162,7 +162,7 @@ public class MediaTx extends Native {
 			String jcodec, String jcolor);
 
 	public static int putVideoFrameJava(VideoFrameTx vf) {
-		return putVideoFrame(vf.getDataFrame(), vf.getWidth(), vf.getHeight(),
+		return putVideoFrameJava(vf.getDataFrame(), vf.getWidth(), vf.getHeight(),
 				vf.getTime());
 	}
 
