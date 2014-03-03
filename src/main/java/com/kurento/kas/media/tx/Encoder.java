@@ -21,15 +21,20 @@ public class Encoder {
 			int width, int height, int frameRate, int bitRate, int gopSize) {
 
 		initFormats();
-		// mediaCodec = MediaCodec.createByCodecName(codecName);
 
-		mediaCodec = MediaCodec.createEncoderByType(mimeType);
+		int iFrameInterval = Math.round((float)gopSize / (float)frameRate);
+		if (codecName != null && !codecName.equals("")) {
+			mediaCodec = MediaCodec.createByCodecName(codecName);
+		} else {
+			mediaCodec = MediaCodec.createEncoderByType(mimeType);
+		}
 		mediaFormat = MediaFormat.createVideoFormat(mimeType, width, height);
 		mediaFormat.setInteger(MediaFormat.KEY_BIT_RATE, bitRate);
 		mediaFormat.setInteger(MediaFormat.KEY_FRAME_RATE, frameRate);
 		mediaFormat.setInteger(MediaFormat.KEY_COLOR_FORMAT,
 				formats.get(colorFormat));
-		mediaFormat.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, gopSize);
+		mediaFormat
+				.setInteger(MediaFormat.KEY_I_FRAME_INTERVAL, iFrameInterval);
 		mediaFormat.setInteger("stride", width);
 		mediaFormat.setInteger("slice-height", height);
 		Log.d(TAG, mediaFormat.toString());
