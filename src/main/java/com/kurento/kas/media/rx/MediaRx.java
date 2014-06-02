@@ -17,6 +17,8 @@
 
 package com.kurento.kas.media.rx;
 
+import android.view.SurfaceHolder;
+
 import com.kurento.kas.media.Native;
 import com.kurento.kas.media.ports.MediaPort;
 
@@ -46,6 +48,15 @@ public class MediaRx extends Native {
 		return startVideoRx(videoMediaPort.getSelf(), sdp, maxDelay,
 				videoReceiver);
 	}
+	
+	private static native int startVideoRxJava(long videoMediaPortRef, String sdp,
+			int maxDelay, VideoRx videoReceiver);
+
+	public static int startVideoRxJava(MediaPort videoMediaPort, String sdp,
+			int maxDelay, VideoRx videoReceiver) {
+		return startVideoRxJava(videoMediaPort.getSelf(), sdp, maxDelay,
+				videoReceiver);
+	}	
 
 	/**
 	 * Stop video reception.

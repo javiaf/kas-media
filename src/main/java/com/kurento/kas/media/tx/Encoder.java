@@ -1,7 +1,9 @@
 package com.kurento.kas.media.tx;
 
 import java.nio.ByteBuffer;
+
 import java.util.HashMap;
+import com.kurento.kas.media.codecs.FormatConverter;
 import android.media.MediaCodec;
 import android.media.MediaCodecInfo;
 import android.media.MediaFormat;
@@ -12,7 +14,9 @@ public class Encoder {
 	private MediaCodec mediaCodec;
 	private MediaFormat mediaFormat;
 	private HashMap<String, Integer> formats;
-
+	//private byte[] csd;       -- FOR CODEC SPECIFIC DATA RETURNED ENCODING FIRST FRAME
+	private int width;
+	private int height;
 	static final int NV21 = 2;
 	static final int YV12 = 3;
 	private static final String TAG = "MediaEncoder";
@@ -21,8 +25,9 @@ public class Encoder {
 			int width, int height, int frameRate, int bitRate, int gopSize) {
 
 		initFormats();
-
-		int iFrameInterval = Math.round((float)gopSize / (float)frameRate);
+		this.width = width;
+		this.height = height;
+		int iFrameInterval = Math.round((float) gopSize / (float) frameRate);
 		if (codecName != null && !codecName.equals("")) {
 			mediaCodec = MediaCodec.createByCodecName(codecName);
 		} else {
@@ -41,6 +46,7 @@ public class Encoder {
 		mediaCodec.configure(mediaFormat, null, null,
 				MediaCodec.CONFIGURE_FLAG_ENCODE);
 		mediaCodec.start();
+		Log.d(TAG, "Output Format beginning " + mediaFormat.toString());
 
 	}
 
@@ -162,9 +168,11 @@ public class Encoder {
 
 		try {
 			frConverted = new byte[input.length];
-			cDelay = swapColorFormat(input, frConverted, NV21,
+			long tIni = System.nanoTime();
+			frConverted = swapColorFormat(input, NV21,
 					mediaFormat.getInteger(MediaFormat.KEY_COLOR_FORMAT),
 					width, height);
+			cDelay = System.nanoTime() - tIni;
 			Log.d(TAG, "Conversion Delay: " + cDelay / 1000000000.00);
 			inputBuffers = mediaCodec.getInputBuffers();
 			outputBuffers = mediaCodec.getOutputBuffers();
@@ -183,6 +191,7 @@ public class Encoder {
 				outputBufferIndex = mediaCodec.dequeueOutputBuffer(bufferInfo,
 						-1);
 				if (outputBufferIndex < 0) {
+
 					switch (outputBufferIndex) {
 					case MediaCodec.INFO_OUTPUT_BUFFERS_CHANGED:
 						Log.d(TAG, "Output Buffers Changed");
@@ -203,8 +212,8 @@ public class Encoder {
 			outputBuffer = outputBuffers[outputBufferIndex];
 			output = new byte[bufferInfo.size];
 			outputBuffer.get(output);
-
 			mediaCodec.releaseOutputBuffer(outputBufferIndex, false);
+			Log.d(TAG, "Encoded " + output.length + " bytes");
 			return output;
 
 		} catch (Throwable t) {
@@ -215,74 +224,30 @@ public class Encoder {
 
 	}
 
-	public int getOutputSize(byte[] output) {
-		if (output != null)
-			return output.length;
-		else
-			return -1;
+	public byte[] swapColorFormat(byte[] frameIn, int colorFormatIn,
+			int colorFormatOut, int width, int height) {
 
-	}
-
-	public long swapColorFormat(byte[] frameIn, byte[] frameOut,
-			int colorFormatIn, int colorFormatOut, int width, int height) {
-		int frameSize = width * height;
-		int qFrameSize = frameSize / 4;
-		long tIni = System.nanoTime();
 		switch (colorFormatIn) {
 
 		case NV21:
 			switch (colorFormatOut) {
 
 			case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar:
-				// CHECK THIS!!
+				return FormatConverter.nv21toi420(frameIn, width, height);
 
-				System.arraycopy(frameIn, 0, frameOut, 0, frameSize); // Y
-				for (int i = 0; i < qFrameSize; i++) {
-					frameOut[frameSize + i] = frameIn[frameSize + i * 2 + 1];
-					frameOut[frameSize + qFrameSize + i] = frameIn[frameSize
-							+ i * 2 + 1];
-				}
-				break;
 			case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar:
-
-				System.arraycopy(frameIn, 0, frameOut, 0, frameSize); // Y
-
-				for (int i = 0; i < qFrameSize; i++) {
-					frameOut[frameSize + i * 2] = frameIn[frameSize + i * 2 + 1]; // Cb
-																					// (U)
-					frameOut[frameSize + i * 2 + 1] = frameIn[frameSize + i * 2]; // Cr
-																					// (V)
-				}
-				break;
+				return FormatConverter.swapSPChroma(frameIn, width, height);
 			}
-			break;
 		case YV12:
 			switch (colorFormatOut) {
 
 			case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420Planar:
-				System.arraycopy(frameIn, 0, frameOut, 0, frameSize); // Y
-				System.arraycopy(frameIn, frameSize, frameOut, frameSize
-						+ qFrameSize, qFrameSize); // Cr (V)
-				System.arraycopy(frameIn, frameSize + qFrameSize, frameOut,
-						frameSize, qFrameSize); // Cb (U)
-				break;
+				return FormatConverter.swapPlanarChroma(frameIn, width, height);
 			case MediaCodecInfo.CodecCapabilities.COLOR_FormatYUV420SemiPlanar:
-
-				System.arraycopy(frameIn, 0, frameOut, 0, frameSize); // Y
-
-				for (int i = 0; i < qFrameSize; i++) {
-					frameOut[frameSize + i * 2] = frameIn[frameSize + i
-							+ qFrameSize]; // Cb (U)
-					frameOut[frameSize + i * 2 + 1] = frameIn[frameSize + i]; // Cr
-																				// (V)
-				}
-				break;
+				return FormatConverter.yv12ToNV12(frameIn, width, height);
 			}
-			break;
 		}
-
-		return System.nanoTime() - tIni;
-
+		return null;
 	}
 
 }
