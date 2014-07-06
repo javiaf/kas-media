@@ -7,25 +7,31 @@ public class FormatConverter {
 	private static final int TILE_SIZE = (TILE_WIDTH * TILE_HEIGHT);
 	private static final int TILE_GROUP_SIZE = (4 * TILE_SIZE);
 
-	/* get frame tile coordinate. XXX: nothing to be understood here, don't try. */
-	private static long tile_pos(long x, long y, long w, long h) {
+	private static long tile_pos(long bx, long by, long nbx, long nby) {
 
-		long flim = x + (y & ~1) * w;
+		long base; // Number of memory block of the first block in row by
+		long offs; // Offset from base
 
-		if ((y & 1) != 0) {
-			flim += (x & ~3) + 2;
-		} else if ((h & 1) == 0 || y != (h - 1)) {
-			flim += (x + 2) & ~3;
+		if ((by & 1) == 0) {
+			base = by * nbx;
+			if ((nby & 1) != 0 && (by == (nby - 1))) {
+				// Last row when nby is odd
+				offs = bx;
+			} else {
+				offs = bx + ((bx + 2) & ~3);
+			}
+		} else {
+			base = (by & (~1)) * nbx + 2;
+			offs = bx + (bx & ~3);
 		}
 
-		return flim;
+		return base + offs;
 	}
+
 	/*
-	 * Change QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka (colorFormat = 2141391875)
-	 * to YUV 420 Semiplanar.
-	 * Working properly with Luma but not with chroma.
-	 * 
-	 * */
+	 * Change QOMX_COLOR_FormatYUV420PackedSemiPlanar64x32Tile2m8ka (colorFormat
+	 * = 2141391875) to NV21.
+	 */
 	public static byte[] qcom_convert(byte[] src, int width, int height,
 			int strbits) {
 		int stride = width;
@@ -89,8 +95,8 @@ public class FormatConverter {
 					srcLuma += TILE_WIDTH;
 					luma_idx += stride;
 
-					System.arraycopy(src, (int) srcChroma, out,
-							(int) (frameSize + chroma_idx), tile_width);
+					System.arraycopy(src, (int) (luma_size + srcChroma),
+							out, (int) (frameSize + chroma_idx), tile_width);
 
 					srcChroma += TILE_WIDTH;
 					chroma_idx += stride;
@@ -106,11 +112,10 @@ public class FormatConverter {
 
 	}
 
-	public static int[] convertYUV420_NV21toARGB8888(byte[] data, int width,
-			int height) {
+	public static void convertYUV420SPtoARGB8888(byte[] data, int[] pixels,
+			int width, int height) {
 		int size = width * height;
 		int offset = size;
-		int[] pixels = new int[size];
 		int u, v, y1, y2, y3, y4;
 
 		// i along Y and the final pixels
@@ -133,7 +138,7 @@ public class FormatConverter {
 			if (i != 0 && (i + 2) % width == 0)
 				i += width;
 		}
-		return pixels;
+	
 	}
 
 	private static int convertYUVtoARGB(int y, int u, int v) {
@@ -145,11 +150,12 @@ public class FormatConverter {
 		b = b > 255 ? 255 : b < 0 ? 0 : b;
 		return 0xff000000 | (r << 16) | (g << 8) | b;
 	}
+
 	/*
-	 *  First: Copy component Luma Y
-	 *  Second: This function is used to swap semiplanar U and V interleaved to change from NV21 to NV12
-	 *  or NV12 to NV21.
-	 * */
+	 * First: Copy component Luma Y Second: This function is used to swap
+	 * semiplanar U and V interleaved to change from NV21 to NV12 or NV12 to
+	 * NV21.
+	 */
 	public static byte[] swapSPChroma(byte[] frameIn, int width, int height) {
 		byte[] frameOut = new byte[frameIn.length];
 		int frameSize = width * height;
@@ -162,11 +168,12 @@ public class FormatConverter {
 		}
 		return frameOut;
 	}
+
 	/*
-	 *  First: Copy component Luma Y
-	 *  Second: Get components Chroma U and V. NV21 is semiplanar format and its components are
-	 *  in same plane interleaved. In I420 are separated in diferent planes separated by qFrameSize.
-	 * */
+	 * First: Copy component Luma Y Second: Get components Chroma U and V. NV21
+	 * is semiplanar format and its components are in same plane interleaved. In
+	 * I420 are separated in diferent planes separated by qFrameSize.
+	 */
 	public static byte[] i420ToNV21(byte[] in, int width, int height) {
 		int frameSize = width * height;
 		int qFrameSize = frameSize / 4;
@@ -180,11 +187,12 @@ public class FormatConverter {
 		}
 		return out;
 	}
+
 	/*
-	 *  First: Copy component Luma Y
-	 *  Second: Get components Chroma U and V. NV21 is semiplanar format and its components are
-	 *  in same plane interleaved. In I420 are separated in diferent planes separated by qFrameSize.
-	 * */
+	 * First: Copy component Luma Y Second: Get components Chroma U and V. NV21
+	 * is semiplanar format and its components are in same plane interleaved. In
+	 * I420 are separated in diferent planes separated by qFrameSize.
+	 */
 	public static byte[] nv21toi420(byte[] in, int width, int height) {
 		int frameSize = width * height;
 		int qFrameSize = frameSize / 4;
@@ -198,11 +206,11 @@ public class FormatConverter {
 	}
 
 	/*
-	 *  First: Copy component Luma Y
-	 *  Second: Get components Chroma U and V. YV12 is planar format and its components are
-	 *  in diferent planes separated by qFrameSize, in I420 too, but U and V have to be swapped.
-	 * */
-	
+	 * First: Copy component Luma Y Second: Get components Chroma U and V. YV12
+	 * is planar format and its components are in diferent planes separated by
+	 * qFrameSize, in I420 too, but U and V have to be swapped.
+	 */
+
 	public static byte[] swapPlanarChroma(byte[] frameIn, int width, int height) {
 		byte[] frameOut = new byte[frameIn.length];
 		int frameSize = width * height;
@@ -216,11 +224,11 @@ public class FormatConverter {
 	}
 
 	/*
-	 *  First: Copy component Luma Y
-	 *  Second: Get components Chroma U and V. YV12 is planar format and its components are
-	 *  in diferent planes separated by qFrameSize. In NV12 are together interleaved
-	 * */
-	
+	 * First: Copy component Luma Y Second: Get components Chroma U and V. YV12
+	 * is planar format and its components are in diferent planes separated by
+	 * qFrameSize. In NV12 are together interleaved
+	 */
+
 	public static byte[] yv12ToNV12(byte[] frameIn, int width, int height) {
 		byte[] frameOut = new byte[frameIn.length];
 		int frameSize = width * height;
